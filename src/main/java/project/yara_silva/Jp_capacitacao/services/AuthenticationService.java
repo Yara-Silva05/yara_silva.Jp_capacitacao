@@ -32,7 +32,7 @@ public class AuthenticationService {
 
 
     public void register(RegisterRequestDTO body) {
-        if(this.repository.findByUserEmail(body.email()) == null) {
+        if(this.repository.findByEmail(body.email()) == null) {
 
             String encryptedPassword = new BCryptPasswordEncoder().encode(body.password());
             UserModel newUser = new UserModel(body.name(), body.email(), encryptedPassword, body.role());

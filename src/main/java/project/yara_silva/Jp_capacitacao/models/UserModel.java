@@ -10,9 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import project.yara_silva.Jp_capacitacao.enums.RoleEnum;
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Getter
 @Setter
@@ -24,42 +22,42 @@ public class UserModel implements UserDetails, Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "USER_ID")
     private UUID uuid;
 
     @Column(nullable = false)
     private String userName;
 
     @Column(nullable = false, unique = true)
-    private String userEmail;
+    private String email;
 
     @Column(nullable = false)
-    private String userPassword;
+    private String password;
 
     @Column(nullable = false)
-    private RoleEnum userRole;
+    private RoleEnum role;
 
-    public UserModel(String userName,String userEmail, String userPassword, RoleEnum userRole) {
+    public UserModel(String userName, String email, String password, RoleEnum role) {
         this.userName = userName;
-        this.userEmail = userEmail;
-        this.userPassword = userPassword;
-        this.userRole = userRole;
+        this.email = email;
+        this.password = password;
+        this.role = role;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_" + this.userRole.name()));
+        return List.of(new SimpleGrantedAuthority("ROLE_" + this.role.name()));
     }
 
     @Override
     public String getPassword() {
-        return this.userPassword;
+        return this.password;
     }
 
     @Override
     public String getUsername() {
-        return this.userEmail;
+        return this.email;
     }
 
     @Override

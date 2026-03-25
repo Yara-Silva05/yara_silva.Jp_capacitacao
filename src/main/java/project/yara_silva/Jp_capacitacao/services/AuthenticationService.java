@@ -10,7 +10,7 @@ import project.yara_silva.Jp_capacitacao.dtos.request.AuthenticationRequestDTO;
 import project.yara_silva.Jp_capacitacao.dtos.response.LoginResponseDTO;
 import project.yara_silva.Jp_capacitacao.dtos.request.RegisterRequestDTO;
 import project.yara_silva.Jp_capacitacao.exceptions.UserExistsException;
-import project.yara_silva.Jp_capacitacao.models.UserModel;
+import project.yara_silva.Jp_capacitacao.models.main.UserModel;
 import project.yara_silva.Jp_capacitacao.repository.UserRepository;
 
 @Service

@@ -1,4 +1,4 @@
-package project.yara_silva.Jp_capacitacao.models;
+package project.yara_silva.Jp_capacitacao.models.main;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -23,7 +23,6 @@ public class UserModel implements UserDetails, Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "USER_ID")
     private UUID uuid;
 
     @Column(nullable = false)
@@ -37,6 +36,9 @@ public class UserModel implements UserDetails, Serializable {
 
     @Column(nullable = false)
     private RoleEnum role;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private CartModel cart;
 
     public UserModel(String userName, String email, String password, RoleEnum role) {
         this.userName = userName;

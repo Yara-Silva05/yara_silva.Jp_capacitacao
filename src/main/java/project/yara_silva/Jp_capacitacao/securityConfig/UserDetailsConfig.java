@@ -14,6 +14,7 @@ public class UserDetailsConfig implements UserDetailsService {
 
     @Autowired
     UserRepository repository;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return repository.findByEmail(username);

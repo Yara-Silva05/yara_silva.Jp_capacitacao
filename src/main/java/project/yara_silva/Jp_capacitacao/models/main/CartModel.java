@@ -23,7 +23,7 @@ public class CartModel implements Serializable {
     private UUID id;
 
     @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "user_id",  nullable = false)
     private UserModel user;
 
     @Column

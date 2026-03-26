@@ -22,7 +22,7 @@ public class CategoryModel implements Serializable {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column
+    @Column(nullable = false, unique = true)
     private String nameCategory;
 
     @Column

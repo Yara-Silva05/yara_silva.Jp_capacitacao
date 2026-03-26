@@ -50,11 +50,42 @@ public class ProductModel implements Serializable {
     private Integer stockQuantity;
 
     @Column(nullable = false)
-    private Boolean active;
+    private Boolean active = true;
 
     @Column
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @Column
     private LocalDateTime updatedAt;
+
+    public ProductModel(UserModel user, String nameProduct, CategoryModel category, String sku, String description, BigDecimal price, BigDecimal costPrice, Integer stockQuantity) {
+    }
+
+    public void setCategory(CategoryModel category) {
+        this.category = category;
+    }
+
+    public void setSku(String sku) {
+        this.sku = sku;
+    }
+
+    public void setNameProduct(String nameProduct) {
+        this.nameProduct = nameProduct;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    public void setCostPrice(BigDecimal costPrice) {
+        this.costPrice = costPrice;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
 }

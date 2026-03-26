@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import project.yara_silva.Jp_capacitacao.dtos.request.AuthenticationRequestDTO;
@@ -30,16 +31,20 @@ public class AuthenticationService {
         return new LoginResponseDTO(tokenService.generateToken((UserModel) auth.getPrincipal()));
     }
 
-
     public void register(RegisterRequestDTO body) {
         if(this.repository.findByEmail(body.email()) == null) {
 
             String encryptedPassword = new BCryptPasswordEncoder().encode(body.password());
-            UserModel newUser = new UserModel(body.name(), body.email(), encryptedPassword, body.role());
+            UserModel newUser = new UserModel(body.userName(), body.email(), encryptedPassword, body.role());
 
             this.repository.save(newUser);
         }else {
             throw new UserExistsException();
         }
+    }
+
+    public UserModel extractUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return (UserModel) authentication.getPrincipal();
     }
 }

@@ -12,8 +12,8 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Entity
 @Table(name = "tb_users")

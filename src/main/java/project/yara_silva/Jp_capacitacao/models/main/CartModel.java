@@ -1,30 +1,29 @@
 package project.yara_silva.Jp_capacitacao.models.main;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-@Getter
-@Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Getter
 @Entity
-@Table(name = "TB_CART")
+@Table(name = "tb_cart")
 public class CartModel implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID uuid;
+    private UUID id;
 
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private UserModel user;
 
     @Column

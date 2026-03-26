@@ -1,9 +1,9 @@
 package project.yara_silva.Jp_capacitacao.models.main;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,18 +12,18 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
-@Getter
-@Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Getter
 @Entity
-@Table(name = "TB_USERS")
+@Table(name = "tb_users")
 public class UserModel implements UserDetails, Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID uuid;
+    private UUID id;
 
     @Column(nullable = false)
     private String userName;
@@ -34,6 +34,7 @@ public class UserModel implements UserDetails, Serializable {
     @Column(nullable = false)
     private String password;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private RoleEnum role;
 

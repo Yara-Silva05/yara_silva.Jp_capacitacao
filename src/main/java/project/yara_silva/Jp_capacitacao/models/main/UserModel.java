@@ -38,8 +38,8 @@ public class UserModel implements UserDetails, Serializable {
     @Column(nullable = false)
     private RoleEnum role;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private CartModel cart;
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private CartModel cart = new CartModel();
 
     public UserModel(String userName, String email, String password, RoleEnum role) {
         this.userName = userName;

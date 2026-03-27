@@ -31,4 +31,14 @@ public class CartModel implements Serializable {
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
     private List<CartItemModel> items = new ArrayList<>();
+
+    public void addCartItem(CartItemModel item) {
+        items.add(item);
+    }
+
+    public void removeCartItem(CartItemModel item) {
+        items.remove(item);
+    }
+
+
 }

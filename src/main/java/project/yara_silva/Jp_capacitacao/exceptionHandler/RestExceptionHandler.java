@@ -5,16 +5,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import project.yara_silva.Jp_capacitacao.exceptions.CategoryNotFoundException;
-import project.yara_silva.Jp_capacitacao.exceptions.ProductNotFoundException;
-import project.yara_silva.Jp_capacitacao.exceptions.PromotionInvalidException;
-import project.yara_silva.Jp_capacitacao.exceptions.UserExistsException;
+import project.yara_silva.Jp_capacitacao.exceptions.*;
+
+import java.util.Arrays;
 
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(UserExistsException.class)
-    private ResponseEntity<String> userExistsHandler(UserExistsException exception) {
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    private ResponseEntity<String> userExistsHandler(UserAlreadyExistsException exception) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(exception.getMessage());
     }
 
@@ -29,7 +28,22 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(CategoryNotFoundException.class)
-    private ResponseEntity<String> cateforyNotFoundHandler(CategoryNotFoundException exception) {
+    private ResponseEntity<String> categoryNotFoundHandler(CategoryNotFoundException exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+    }
+
+    @ExceptionHandler(CartItemAlreadyExistsException.class)
+    private ResponseEntity<String> cartItemAlreadyExistsHandler(CartItemAlreadyExistsException exception) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(exception.getMessage());
+    }
+
+    @ExceptionHandler(CartItemNotFoundException.class)
+    private ResponseEntity<String> cartItemNotFoundHandler(CartItemNotFoundException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+    }
+
+    @ExceptionHandler(Exception.class)
+    private ResponseEntity<String> excecaoGenericaHandler(Exception exception) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro inesperado: " + (exception.getClass().getCanonicalName() + exception.getMessage() + "\n" + Arrays.toString(exception.getStackTrace())));
     }
 }

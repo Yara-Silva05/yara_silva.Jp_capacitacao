@@ -1,15 +1,14 @@
 package project.yara_silva.Jp_capacitacao.models.main;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.UUID;
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Entity
 @Table(name = "tb_cart_item")
@@ -31,4 +30,25 @@ public class CartItemModel implements Serializable {
 
     @Column(nullable = false)
     private Integer quantity;
+
+    public CartItemModel(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public CartItemModel(CartModel cart, ProductModel product, Integer quantity) {
+        this.cart = cart;
+        this.product = product;
+        this.quantity = quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        CartItemModel that = (CartItemModel) o;
+        return Objects.equals(cart, that.cart) && Objects.equals(product, that.product);
+    }
 }

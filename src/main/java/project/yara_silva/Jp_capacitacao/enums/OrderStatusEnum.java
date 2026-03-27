@@ -1,7 +1,7 @@
 package project.yara_silva.Jp_capacitacao.enums;
 
 public enum OrderStatusEnum {
-    PENDING("awaiting payment"),
+    CREATED("created"),
     PAID("paid"),
     SHIPPED("shipped"),
     DELIVERED("delivered"),

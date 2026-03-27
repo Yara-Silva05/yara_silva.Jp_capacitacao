@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import java.io.Serial;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -31,4 +32,14 @@ public class OrderItemModel implements Serializable {
 
     @Column(nullable = false)
     private Integer quantity;
+
+    @Column(nullable = false)
+    private BigDecimal priceSnapshot;
+
+    public OrderItemModel(OrderModel order, ProductModel product, Integer quantity, BigDecimal priceSnapshot) {
+        this.order = order;
+        this.product = product;
+        this.quantity = quantity;
+        this.priceSnapshot = priceSnapshot;
+    }
 }

@@ -42,6 +42,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
     }
 
+    @ExceptionHandler(EmptyOrderException.class)
+    private ResponseEntity<String> EmptyOrderHandler(EmptyOrderException exception) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+    }
+
     @ExceptionHandler(Exception.class)
     private ResponseEntity<String> excecaoGenericaHandler(Exception exception) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro inesperado: " + (exception.getClass().getCanonicalName() + exception.getMessage() + "\n" + Arrays.toString(exception.getStackTrace())));

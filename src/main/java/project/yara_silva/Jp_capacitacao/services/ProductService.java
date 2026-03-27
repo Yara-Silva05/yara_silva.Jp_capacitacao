@@ -137,7 +137,7 @@ public class ProductService {
         );
     }
 
-    private ProductSimpleResponseDTO convertProductSimpleToResponseDTO(ProductModel product) {
+    public ProductSimpleResponseDTO convertProductSimpleToResponseDTO(ProductModel product) {
         return new ProductSimpleResponseDTO(
                 product.getCategory().getNameCategory(),
                 product.getNameProduct(),

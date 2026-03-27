@@ -46,9 +46,24 @@ public class OrderModel implements Serializable {
     private BigDecimal total;
 
     @Column
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private OrderStatusEnum status;
+
+    public OrderModel(UserModel user, String address, BigDecimal freight, OrderStatusEnum status) {
+        this.user = user;
+        this.address = address;
+        this.freight = freight;
+        this.status = status;
+    }
+
+    public void setTotal(BigDecimal total) {
+        this.total = total;
+    }
+
+    public void addOrderItem(OrderItemModel item) {
+        items.add(item);
+    }
 }

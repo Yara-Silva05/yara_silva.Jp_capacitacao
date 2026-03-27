@@ -7,12 +7,13 @@ import project.yara_silva.Jp_capacitacao.dtos.request.ProductRequestDTO;
 import project.yara_silva.Jp_capacitacao.dtos.request.UpdateProductRequestDTO;
 import project.yara_silva.Jp_capacitacao.dtos.response.ProductFullResponseDTO;
 import project.yara_silva.Jp_capacitacao.dtos.response.ProductSimpleResponseDTO;
+import project.yara_silva.Jp_capacitacao.exceptions.CategoryNotFoundException;
 import project.yara_silva.Jp_capacitacao.exceptions.ProductNotFoundException;
 import project.yara_silva.Jp_capacitacao.models.main.CategoryModel;
 import project.yara_silva.Jp_capacitacao.models.main.ProductModel;
 import project.yara_silva.Jp_capacitacao.repository.CategoryRepository;
 import project.yara_silva.Jp_capacitacao.repository.ProductRepository;
-
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -84,7 +85,7 @@ public class ProductService {
         if (body.category() != null) {
             if (!body.category().isBlank()) {
                 CategoryModel category = categoryRepository.findByNameCategory(body.category())
-                        .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
+                        .orElseThrow(CategoryNotFoundException::new);
                 product.setCategory(category);
             }
         }
@@ -113,6 +114,7 @@ public class ProductService {
             product.setActive(body.active());
         }
 
+        product.setUpdatedAt(LocalDateTime.now());
         productRepository.save(product);
 
         return convertProductFullToResponseDTO(product);

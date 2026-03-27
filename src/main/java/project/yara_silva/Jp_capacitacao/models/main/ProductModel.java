@@ -88,4 +88,8 @@ public class ProductModel implements Serializable {
     public void setActive(Boolean active) {
         this.active = active;
     }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 }

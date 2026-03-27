@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.yara_silva.Jp_capacitacao.dtos.request.ProductRequestDTO;
+import project.yara_silva.Jp_capacitacao.dtos.request.UpdateProductRequestDTO;
 import project.yara_silva.Jp_capacitacao.dtos.response.ProductFullResponseDTO;
 import project.yara_silva.Jp_capacitacao.dtos.response.ProductSimpleResponseDTO;
 import project.yara_silva.Jp_capacitacao.services.ProductService;
@@ -38,6 +39,11 @@ public class ProductController {
     @GetMapping("/simple{id}")
     public ResponseEntity<ProductSimpleResponseDTO> getByIdSimple(@PathVariable(value = "id")UUID id) {
         return ResponseEntity.status(HttpStatus.OK).body(productService.getByIdSimple(id));
+    }
+
+    @PutMapping("/update{id}")
+    public ResponseEntity<ProductFullResponseDTO> updateProduct(@PathVariable(value = "id") UUID id, @RequestBody @Valid UpdateProductRequestDTO body) {
+        return ResponseEntity.status(HttpStatus.OK).body(productService.updateProduct(id, body));
     }
 
     @DeleteMapping("delete{id}")

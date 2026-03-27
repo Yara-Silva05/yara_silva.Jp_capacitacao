@@ -28,7 +28,7 @@ public class CategoryService {
             CategoryModel categoryParent = categoryRepository.findByNameCategory(body.categoryParent())
                     .orElseThrow(CategoryNotFoundException::new);
 
-            List<CategoryModel> subCategories = categoryRepository.findByCategoryParent(categoryParent);
+            List<CategoryModel> subCategories = categoryRepository.findByParent(categoryParent);
 
             boolean categoryAlreadyExists = subCategories.stream()
                     .anyMatch(subCategory -> subCategory.getNameCategory().equalsIgnoreCase(body.nameCategory()));

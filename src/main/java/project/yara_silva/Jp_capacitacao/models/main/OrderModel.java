@@ -63,6 +63,10 @@ public class OrderModel implements Serializable {
         this.total = total;
     }
 
+    public void setStatus(OrderStatusEnum status) {
+        this.status = status;
+    }
+
     public void addOrderItem(OrderItemModel item) {
         items.add(item);
     }

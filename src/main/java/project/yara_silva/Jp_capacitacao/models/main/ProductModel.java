@@ -59,6 +59,14 @@ public class ProductModel implements Serializable {
     private LocalDateTime updatedAt;
 
     public ProductModel(UserModel user, String nameProduct, CategoryModel category, String sku, String description, BigDecimal price, BigDecimal costPrice, Integer stockQuantity) {
+        this.user = user;
+        this.nameProduct = nameProduct;
+        this.category = category;
+        this.sku = sku;
+        this.description = description;
+        this.price = price;
+        this.costPrice = costPrice;
+        this.stockQuantity = stockQuantity;
     }
 
     public void setCategory(CategoryModel category) {

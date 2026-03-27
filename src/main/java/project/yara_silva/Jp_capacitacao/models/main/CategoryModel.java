@@ -22,16 +22,32 @@ public class CategoryModel implements Serializable {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String nameCategory;
 
     @Column
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @Column
     private LocalDateTime updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "parent_id")
-    private CategoryModel parentId;
+    private CategoryModel parent;
+
+    public CategoryModel(String nameCategory) {
+        this.nameCategory = nameCategory;
+    }
+
+    public void setNameCategory(String nameCategory) {
+        this.nameCategory = nameCategory;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public void setParent(CategoryModel parent) {
+        this.parent = parent;
+    }
 }

@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import project.yara_silva.Jp_capacitacao.exceptions.CategoryNotFoundException;
 import project.yara_silva.Jp_capacitacao.exceptions.ProductNotFoundException;
 import project.yara_silva.Jp_capacitacao.exceptions.PromotionInvalidException;
 import project.yara_silva.Jp_capacitacao.exceptions.UserExistsException;
@@ -24,6 +25,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ProductNotFoundException.class)
     private ResponseEntity<String> productNotFoundHandler(ProductNotFoundException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+    }
+
+    @ExceptionHandler(CategoryNotFoundException.class)
+    private ResponseEntity<String> cateforyNotFoundHandler(CategoryNotFoundException exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
     }
 }

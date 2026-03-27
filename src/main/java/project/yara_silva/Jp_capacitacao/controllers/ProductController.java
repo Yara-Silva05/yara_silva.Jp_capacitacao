@@ -46,7 +46,7 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(productService.updateProduct(id, body));
     }
 
-    @DeleteMapping("delete{id}")
+    @DeleteMapping("/delete{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable UUID id) {
         productService.deleteProduct(id);
         return ResponseEntity.status(HttpStatus.OK).body("Produto deletado com sucesso!");

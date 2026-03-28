@@ -7,7 +7,9 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 import project.yara_silva.Jp_capacitacao.dtos.request.ProductRequestDTO;
 import project.yara_silva.Jp_capacitacao.dtos.request.UpdateProductRequestDTO;
 import project.yara_silva.Jp_capacitacao.dtos.response.ProductFullResponseDTO;
@@ -28,6 +30,7 @@ public class ProductController {
 
     @Operation(summary = "Cadastra um novo produto")
     @ApiResponse(responseCode = "201",description = "Produto cadastrado com sucesso!")
+    @PreAuthorize("hasAnyRole('SELLER', 'ADMIN')")
     @PostMapping("/create")
     public ResponseEntity<ProductFullResponseDTO> createProduct(@RequestBody @Valid ProductRequestDTO body) {
         return ResponseEntity.status(HttpStatus.CREATED).body(productService.createProduct(body));
@@ -42,6 +45,7 @@ public class ProductController {
 
     @Operation(summary = "Procurar por todos os produtos de forma completa")
     @ApiResponse(responseCode = "200",description = "Sucesso")
+    @PreAuthorize("hasAnyRole('SELLER', 'ADMIN')")
     @GetMapping("/full{id}")
     public ResponseEntity<ProductFullResponseDTO> getByIdFull(@PathVariable(value = "id")UUID id) {
         return ResponseEntity.status(HttpStatus.OK).body(productService.getByIdFull(id));
@@ -56,6 +60,7 @@ public class ProductController {
 
     @Operation(summary = "Atualiza produto")
     @ApiResponse(responseCode = "200",description = "Sucesso")
+    @PreAuthorize("hasAnyRole('SELLER', 'ADMIN')")
     @PutMapping("/update{id}")
     public ResponseEntity<ProductFullResponseDTO> updateProduct(@PathVariable(value = "id") UUID id, @RequestBody @Valid UpdateProductRequestDTO body) {
         return ResponseEntity.status(HttpStatus.OK).body(productService.updateProduct(id, body));
@@ -63,6 +68,7 @@ public class ProductController {
 
     @Operation(summary = "Deleta produto")
     @ApiResponse(responseCode = "200",description = "Sucesso")
+    @PreAuthorize("hasAnyRole('SELLER', 'ADMIN')")
     @DeleteMapping("/delete{id}")
     public ResponseEntity<String> deleteProduct(@PathVariable UUID id) {
         productService.deleteProduct(id);

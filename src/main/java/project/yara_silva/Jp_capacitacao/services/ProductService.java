@@ -60,6 +60,7 @@ public class ProductService {
     }
 
     public ProductFullResponseDTO getByIdFull(UUID id) {
+
         Optional<ProductModel> product = productRepository.findById(id);
         if (product.isPresent()) {
             return convertProductFullToResponseDTO(product.get());

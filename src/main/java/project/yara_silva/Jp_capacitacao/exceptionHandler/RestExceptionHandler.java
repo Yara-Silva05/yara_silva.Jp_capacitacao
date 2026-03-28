@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import project.yara_silva.Jp_capacitacao.exceptions.*;
 
+import java.nio.file.AccessDeniedException;
+import java.security.PrivilegedAction;
 import java.util.Arrays;
 
 @ControllerAdvice
@@ -57,8 +59,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
     }
 
+    @ExceptionHandler(AccessDeniedException.class)
+    private ResponseEntity<String> NotAllowedHandler(AccessDeniedException exception) {
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(exception.getMessage());
+    }
+
     @ExceptionHandler(Exception.class)
     private ResponseEntity<String> excecaoGenericaHandler(Exception exception) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro inesperado: " + (exception.getClass().getCanonicalName() + exception.getMessage() + "\n" + Arrays.toString(exception.getStackTrace())));
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro inesperado: " + exception.getMessage());
     }
 }

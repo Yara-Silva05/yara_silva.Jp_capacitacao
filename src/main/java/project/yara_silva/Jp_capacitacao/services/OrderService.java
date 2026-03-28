@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import project.yara_silva.Jp_capacitacao.dtos.request.OrderRequestDTO;
 import project.yara_silva.Jp_capacitacao.dtos.response.OrderItemResponseDTO;
 import project.yara_silva.Jp_capacitacao.dtos.response.OrderResponseDTO;
+import project.yara_silva.Jp_capacitacao.enums.InventoryReasonEnum;
 import project.yara_silva.Jp_capacitacao.enums.OrderStatusEnum;
 import project.yara_silva.Jp_capacitacao.exceptions.EmptyOrderException;
 import project.yara_silva.Jp_capacitacao.exceptions.OrderNotFoundException;
@@ -35,6 +36,9 @@ public class OrderService {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private InventoryTransactionService inventoryTransactionService;
 
     @Transactional
     public OrderResponseDTO createOrder(OrderRequestDTO body) {
@@ -73,6 +77,8 @@ public class OrderService {
 
         List<OrderItemResponseDTO> itemsDTO = convertOrderItemsToResponseDTO(order);
 
+        items.forEach(item -> inventoryTransactionService.createLog(item.getProduct(), order, item, user, InventoryReasonEnum.PURCHASE));
+
         return new OrderResponseDTO(user.getId(), order.getAddress(), order.getFreight(), order.getTotal(), order.getStatus(), itemsDTO);
     }
 
@@ -87,6 +93,9 @@ public class OrderService {
 
     @Transactional
     public void cancelOrder(UUID id) {
+        UserModel userFromToken = authenticationService.extractUser();
+        UserModel user = userRepository.findById(userFromToken.getId())
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
         OrderModel order = orderRepository.findById(id)
                 .orElseThrow(OrderNotFoundException::new);
@@ -96,9 +105,11 @@ public class OrderService {
         }
 
         order.setStatus(OrderStatusEnum.CANCELED);
+
+        order.getItems().forEach(item -> inventoryTransactionService.createLog(item.getProduct(), order, item, user, InventoryReasonEnum.RETURN));
+
         orderRepository.save(order);
     }
-
 
     private List<OrderItemResponseDTO> convertOrderItemsToResponseDTO(OrderModel order) {
         return order.getItems().stream()

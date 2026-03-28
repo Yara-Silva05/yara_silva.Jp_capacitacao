@@ -1,9 +1,7 @@
 package project.yara_silva.Jp_capacitacao.models.suport;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import project.yara_silva.Jp_capacitacao.enums.InventoryReasonEnum;
 import project.yara_silva.Jp_capacitacao.models.main.OrderModel;
 import project.yara_silva.Jp_capacitacao.models.main.ProductModel;
@@ -13,8 +11,6 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Entity
 @Table(name = "tb_inventory_transaction")
@@ -37,13 +33,25 @@ public class InventoryTransactionModel implements Serializable {
     @Column(nullable = false)
     private InventoryReasonEnum reason;
 
-    @Column
-    private OrderModel referenceId;
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private OrderModel order;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private UserModel createdBy;
 
     @Column(nullable = false)
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
+
+    public InventoryTransactionModel(ProductModel product, Integer delta, InventoryReasonEnum reason, OrderModel order, UserModel createdBy) {
+        this.product = product;
+        this.delta = delta;
+        this.reason = reason;
+        this.order = order;
+        this.createdBy = createdBy;
+    }
+
+    public InventoryTransactionModel() {
+    }
 }

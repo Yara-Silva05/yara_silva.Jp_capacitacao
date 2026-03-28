@@ -7,10 +7,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import project.yara_silva.Jp_capacitacao.exceptions.*;
 
-import java.nio.file.AccessDeniedException;
-import java.security.PrivilegedAction;
-import java.util.Arrays;
-
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -57,11 +53,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(OrderNotFoundException.class)
     private ResponseEntity<String> OrderNotFoundHandler(OrderNotFoundException exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
-    }
-
-    @ExceptionHandler(AccessDeniedException.class)
-    private ResponseEntity<String> NotAllowedHandler(AccessDeniedException exception) {
-        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(exception.getMessage());
     }
 
     @ExceptionHandler(Exception.class)

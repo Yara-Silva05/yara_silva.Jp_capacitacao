@@ -1,5 +1,6 @@
 package project.yara_silva.Jp_capacitacao.controllers;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +10,7 @@ import project.yara_silva.Jp_capacitacao.dtos.request.ProductRequestDTO;
 import project.yara_silva.Jp_capacitacao.dtos.request.UpdateProductRequestDTO;
 import project.yara_silva.Jp_capacitacao.dtos.response.ProductFullResponseDTO;
 import project.yara_silva.Jp_capacitacao.dtos.response.ProductSimpleResponseDTO;
+import project.yara_silva.Jp_capacitacao.securityConfig.WebSecurityConfig;
 import project.yara_silva.Jp_capacitacao.services.ProductService;
 
 import java.util.List;
@@ -16,6 +18,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/product")
+@SecurityRequirement(name = WebSecurityConfig.SECURITY)
 public class ProductController {
 
     @Autowired

@@ -139,6 +139,7 @@ public class ProductService {
 
     public ProductSimpleResponseDTO convertProductSimpleToResponseDTO(ProductModel product) {
         return new ProductSimpleResponseDTO(
+                product.getId(),
                 product.getCategory().getNameCategory(),
                 product.getNameProduct(),
                 product.getDescription(),

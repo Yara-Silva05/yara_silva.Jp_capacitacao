@@ -1,5 +1,6 @@
 package project.yara_silva.Jp_capacitacao.controllers;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import project.yara_silva.Jp_capacitacao.dtos.request.CategoryRequestDTO;
 import project.yara_silva.Jp_capacitacao.dtos.request.UpdateCategoryRequestDTO;
 import project.yara_silva.Jp_capacitacao.dtos.response.CategoryResponseDTO;
+import project.yara_silva.Jp_capacitacao.securityConfig.WebSecurityConfig;
 import project.yara_silva.Jp_capacitacao.services.CategoryService;
 
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/category")
+@SecurityRequirement(name = WebSecurityConfig.SECURITY)
 public class CategoryController {
 
     @Autowired

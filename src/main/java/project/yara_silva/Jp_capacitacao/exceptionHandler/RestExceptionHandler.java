@@ -32,6 +32,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
     }
 
+    @ExceptionHandler(CategoryAlreadyExistsException.class)
+    private ResponseEntity<String> categoryAlreadyExistsHandler(CategoryAlreadyExistsException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+    }
+
     @ExceptionHandler(CartItemAlreadyExistsException.class)
     private ResponseEntity<String> cartItemAlreadyExistsHandler(CartItemAlreadyExistsException exception) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(exception.getMessage());
@@ -45,6 +50,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(EmptyOrderException.class)
     private ResponseEntity<String> EmptyOrderHandler(EmptyOrderException exception) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+    }
+
+    @ExceptionHandler(OrderNotFoundException.class)
+    private ResponseEntity<String> OrderNotFoundHandler(OrderNotFoundException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
     }
 
     @ExceptionHandler(Exception.class)

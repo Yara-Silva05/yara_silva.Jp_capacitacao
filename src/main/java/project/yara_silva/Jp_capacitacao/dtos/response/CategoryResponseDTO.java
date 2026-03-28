@@ -1,4 +1,7 @@
 package project.yara_silva.Jp_capacitacao.dtos.response;
 
-public record CategoryResponseDTO(String nameCategory) {
+import java.util.UUID;
+
+public record CategoryResponseDTO(UUID id,
+                                  String nameCategory) {
 }

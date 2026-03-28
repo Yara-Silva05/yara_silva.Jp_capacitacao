@@ -39,8 +39,8 @@ public class UserModel implements UserDetails, Serializable {
     private RoleEnum role;
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private CartModel cart = new CartModel();
-
+    private CartModel cart;
+    
     public UserModel(String userName, String email, String password, RoleEnum role) {
         this.userName = userName;
         this.email = email;
@@ -81,5 +81,8 @@ public class UserModel implements UserDetails, Serializable {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void setCart(CartModel cart) {
     }
 }

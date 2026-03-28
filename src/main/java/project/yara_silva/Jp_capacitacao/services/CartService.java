@@ -23,30 +23,33 @@ import java.util.UUID;
 public class CartService {
 
     @Autowired
-    CartRepository cartRepository;
+    private CartRepository cartRepository;
 
     @Autowired
-    CartItemRepository cartItemRepository;
+    private CartItemRepository cartItemRepository;
 
     @Autowired
-    ProductRepository productRepository;
+    private ProductRepository productRepository;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    AuthenticationService authenticationService;
+    private AuthenticationService authenticationService;
 
     @Transactional
     public CartItemResponseDTO createCartItem(CartItemRequestDTO body) {
-        UserModel user = authenticationService.extractUser();
+        UserModel userFromToken = authenticationService.extractUser();
+        UserModel user = userRepository.findById(userFromToken.getId())
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
         CartModel cart = user.getCart();
 
         CartItemModel item = new CartItemModel(cart, productRepository.findById(body.idProduct()).orElseThrow(ProductNotFoundException::new), body.quantity());
 
         if(cart.getItems().stream()
-                .anyMatch(cartItem-> cartItem.equals(item))) {
-            throw  new CartItemAlreadyExistsException();
+                .anyMatch(cartItem -> cartItem.equals(item))) {
+            throw new CartItemAlreadyExistsException();
         }
 
         cart.addCartItem(item);
@@ -55,10 +58,13 @@ public class CartService {
         return convertCartItemToResponseDTO(item);
     }
 
+    @Transactional
     public List<CartItemResponseDTO> getAllCartItem() {
-        UserModel user = authenticationService.extractUser();
-        CartModel cart = user.getCart();
+        UserModel userFromToken = authenticationService.extractUser();
+        UserModel user = userRepository.findById(userFromToken.getId())
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
+        CartModel cart = user.getCart();
         List<CartItemModel> items = cart.getItems();
 
         return items.stream()

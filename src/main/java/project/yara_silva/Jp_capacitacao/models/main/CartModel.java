@@ -40,5 +40,7 @@ public class CartModel implements Serializable {
         items.remove(item);
     }
 
-
+    public void setUser(UserModel user) {
+        this.user = user;
+    }
 }

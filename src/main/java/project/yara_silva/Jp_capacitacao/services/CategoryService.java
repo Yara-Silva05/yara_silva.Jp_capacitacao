@@ -6,10 +6,12 @@ import org.springframework.transaction.annotation.Transactional;
 import project.yara_silva.Jp_capacitacao.dtos.request.CategoryRequestDTO;
 import project.yara_silva.Jp_capacitacao.dtos.request.UpdateCategoryRequestDTO;
 import project.yara_silva.Jp_capacitacao.dtos.response.CategoryResponseDTO;
+import project.yara_silva.Jp_capacitacao.exceptions.CategoryAlreadyExistsException;
 import project.yara_silva.Jp_capacitacao.exceptions.CategoryNotFoundException;
 import project.yara_silva.Jp_capacitacao.models.main.CategoryModel;
 import project.yara_silva.Jp_capacitacao.repository.CategoryRepository;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,27 +19,27 @@ import java.util.UUID;
 public class CategoryService {
 
     @Autowired
-    CategoryRepository categoryRepository;
+    private CategoryRepository categoryRepository;
 
     @Transactional
     public CategoryResponseDTO createCategory(CategoryRequestDTO body) {
-        CategoryModel category = new CategoryModel(
-                body.nameCategory());
+        CategoryModel category = new CategoryModel(body.nameCategory());
 
-        if (body.categoryParent() != null) {
+        if (body.categoryParent() != null && !body.categoryParent().isBlank()) {
             CategoryModel categoryParent = categoryRepository.findByNameCategory(body.categoryParent())
                     .orElseThrow(CategoryNotFoundException::new);
 
             List<CategoryModel> subCategories = categoryRepository.findByParent(categoryParent);
+            validateCategoryAlreadyExists(subCategories, body.nameCategory(), categoryParent);
 
-            boolean categoryAlreadyExists = subCategories.stream()
-                    .anyMatch(subCategory -> subCategory.getNameCategory().equalsIgnoreCase(body.nameCategory()));
-
-            if (categoryAlreadyExists) {
-                throw new RuntimeException("Essa categoria já esta cadastrada em: " + categoryParent.getNameCategory());
-            }
             category.setParent(categoryParent);
+        } else {
+            List<CategoryModel> categoriesWithoutParent = categoryRepository.findByParentIsNull()
+                    .orElse(new ArrayList<>());
+
+            validateCategoryAlreadyExists(categoriesWithoutParent, body.nameCategory(), null);
         }
+
         categoryRepository.save(category);
         return convertCategoryToResponseDTO(category);
     }
@@ -71,8 +73,21 @@ public class CategoryService {
         categoryRepository.deleteById(id);
     }
 
+    private void validateCategoryAlreadyExists(List<CategoryModel> categories, String nameCategory, CategoryModel categoryParent) {
+        boolean categoryAlreadyExists = categories.stream()
+                .anyMatch(cat -> cat.getNameCategory().equalsIgnoreCase(nameCategory));
+
+        if (categoryAlreadyExists) {
+            if (categoryParent != null) {
+                throw new CategoryAlreadyExistsException("Essa categoria já está cadastrada em: " + categoryParent.getNameCategory());
+            }
+            throw new CategoryAlreadyExistsException("Essa categoria já está cadastrada como categoria principal");
+        }
+    }
+
     private CategoryResponseDTO convertCategoryToResponseDTO(CategoryModel category) {
         return new CategoryResponseDTO(
+                category.getId(),
                 category.getNameCategory());
     }
 }

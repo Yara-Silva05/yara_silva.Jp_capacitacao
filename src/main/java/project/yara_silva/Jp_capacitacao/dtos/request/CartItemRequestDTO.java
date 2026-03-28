@@ -1,12 +1,10 @@
 package project.yara_silva.Jp_capacitacao.dtos.request;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.UUID;
 
-public record CartItemRequestDTO(@NotBlank
-                                 @NotNull
+public record CartItemRequestDTO(@NotNull
                                  UUID idProduct,
 
                                  @NotNull
